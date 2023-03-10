@@ -1,0 +1,7 @@
+Track of workstation logon activity
+
+IdentityLogonEvents
+| where Application == @"Active Directory"
+| where DeviceName contains "1.1.1.1" //change name based on device name or IP address of system
+| where ActionType == @"LogonSuccess"
+| summarize count() by AccountName
