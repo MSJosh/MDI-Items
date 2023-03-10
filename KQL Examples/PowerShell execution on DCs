@@ -1,0 +1,15 @@
+PowerShell execution on DCs
+MDI generates an alert when remote code execution is performed against a DC, however if you need further investigation, you can run the following query to get the list of PowerShell command executed remotely to a DC 
+
+IdentityDirectoryEvents
+| where ActionType == @"PowerShell execution"
+| extend Command = todynamic(AdditionalFields)["PowerShell execution"]
+| project Timestamp, ActionType, DeviceName, IPAddress, DestinationDeviceName, AccountName, AccountDomain, Command
+
+If Defender for Endpoint is on the server/workstation you can run this to get more info.
+
+DeviceProcessEvents
+| where Timestamp > ago(7d)
+| where FileName in~ ("powershell.exe", "powershell_ise.exe")
+|project ProcessCommandLine,DeviceName,AccountName
+|limit 10
