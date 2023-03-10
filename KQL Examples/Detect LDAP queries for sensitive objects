@@ -1,0 +1,8 @@
+Detect Active Directory LDAP queries that search for sensitive objects in the organization
+This LDAP query covers BloodHound tool
+
+let SensitiveObjects = "[\"Administrators\", \"Domain Controllers\", \"Domain Admins\", \"Account Operators\", \"Backup Operators\", \"DnsAdmin\", \"Enterprise Admins\", \"Group Policy Creator Owners\"]";
+IdentityQueryEvents
+| where ActionType == "LDAP query"
+| parse Query with * "Search Scope: " SearchScope ", Base Object:" BaseObject ", Search Filter: " SearchFilter
+| where SensitiveObjects contains QueryTarget or SearchFilter contains "admincount=1"
