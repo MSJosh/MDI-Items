@@ -1,0 +1,7 @@
+Note that MDI alerts on other direction where user or service is pulling files from domain controller alerting againsts exfiltration. This is people putting things in sysvol etc. 
+
+IdentityDirectoryEvents
+| where ActionType == @"SMB file copy"
+| extend ParsedFields=parse_json(AdditionalFields)
+| project Timestamp, ActionType, DeviceName, IPAddress, AccountDisplayName, DestinationDeviceName, DestinationPort, FileName=tostring(ParsedFields.FileName), FilePath=tostring(ParsedFields.FilePath), Method=tostring(ParsedFields.Method)
+| where Method == @"Write"
