@@ -1,0 +1,7 @@
+Kerbros should be more prevalent than NTLM.
+
+IdentityLogonEvents
+| where ActionType == "LogonSuccess"
+| where Application == "Active Directory"
+| where Protocol in ("Ntlm", "Kerberos")
+| summarize count() by Protocol
