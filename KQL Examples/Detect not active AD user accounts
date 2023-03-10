@@ -1,0 +1,7 @@
+Detect Active Directory service accounts that are not active because their last logon was more than 14 days ago 
+
+IdentityLogonEvents 
+| project Timestamp, AccountName, DeviceName, LogonType
+| where AccountName startswith "XXX"  // Replace XXX on line 4 with the naming convention start of your Active Directory service accounts
+| summarize LastLogon = max(Timestamp) by AccountName, LogonType, DeviceName
+| where LastLogon < ago(14d) //Can expand to longer time but smart small :)
