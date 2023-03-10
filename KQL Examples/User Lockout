@@ -1,0 +1,7 @@
+Finding where accounts are getting locked out.
+
+IdentityLogonEvents
+| where LogonType == "Failed logon"
+| where isnotempty(DestinationDeviceName)
+| summarize Attempts = count() by DeviceName, DestinationDeviceName , FailureReason
+| where Attempts > 100 //Limited by 100 lines you can change this to whatever you want
