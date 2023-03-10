@@ -1,0 +1,6 @@
+Track of user logon activity
+
+IdentityLogonEvents
+| where Application == @"Active Directory"
+| where AccountUpn == @"name@upn.com" // set account information here
+| where ActionType == @"LogonSuccess" //Can remove this line if you just want to get all user activity.
