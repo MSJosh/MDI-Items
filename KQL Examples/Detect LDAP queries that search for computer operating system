@@ -1,0 +1,13 @@
+Detect Active Directory LDAP queries that try to find operating systems that are vulnerable to specific vulnerabilities
+
+This LDAP query cover MetaSploit 
+
+let ComputerObject = "objectCategory=computer";
+let ComputerClass = "objectClass=computer";
+let SamAccountComputer = "sAMAccountType=805306369";
+let OperatingSystem = "operatingSystem=";
+IdentityQueryEvents
+| where ActionType == "LDAP query"
+| parse Query with * "Search Scope: " SearchScope ", Base Object:" BaseObject ", Search Filter: " SearchFilter
+| where (SearchFilter contains ComputerObject or SearchFilter contains ComputerClass or SearchFilter contains SamAccountComputer) and
+ SearchFilter contains OperatingSystem
