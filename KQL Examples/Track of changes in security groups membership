@@ -1,0 +1,13 @@
+Track of changes in security groups membership
+
+IdentityDirectoryEvents
+| where Application == "Active Directory"
+| where ActionType == "Group Membership changed"
+| where DestinationDeviceName != "" // Exclude activites coming AD Sync changes. 
+| extend ToGroup = tostring(parse_json(AdditionalFields).["TO.GROUP"]) // Extracts the group name if action is add enity to a group.
+| extend FromGroup = tostring(parse_json(AdditionalFields).["FROM.GROUP"]) // etracts the group name if action is remove entity from a group.
+| extend Action = iff(isempty(ToGroup), "Remove", "Add") // calculates if the action is Remove or Add
+| extend GroupModified = iff(isempty(ToGroup), FromGroup, ToGroup) // group name that the action was taken on 
+| extend Target_Group = tostring(parse_json(AdditionalFields).["TARGET_OBJECT.GROUP"])
+| project Timestamp, Action, GroupModified,  Target_Account = TargetAccountDisplayName, Target_UPN = TargetAccountUpn, Target_Group,  DC=DestinationDeviceName, Actor=AccountName, ActorDomain=AccountDomain, AdditionalFields
+| sort by Timestamp desc 
