@@ -1,0 +1,6 @@
+Get user log in from Active Directory 
+Limit the time range as this pulls against all records to show records. This is a good start query to get a high level of what exists in the enviorment and from there you can build off it.
+
+IdentityLogonEvents
+|where Application == "Active Directory"
+
