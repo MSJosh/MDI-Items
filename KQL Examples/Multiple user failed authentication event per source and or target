@@ -1,0 +1,20 @@
+//by source and target
+DeviceLogonEvents
+// time of the attack
+| where Timestamp  between (datetime(2023-07-04 02:51:21.9148004) ..datetime(2023-07-04 14:50:45.5294279) )
+| where ActionType == "LogonFailed"
+| where Protocol == "NTLM"
+| where FailureReason == "InvalidUserNameOrPassword"
+| summarize cnt_accountNames = dcount(AccountName) by DeviceName,RemoteDeviceName,RemoteIP,Protocol
+| where cnt_accountNames > 50
+ 
+
+//only by source
+DeviceLogonEvents
+// time of the attack
+|where Timestamp  between (datetime(2023-07-04 02:51:21.9148004) ..datetime(2023-07-04 14:50:45.5294279) )
+| where ActionType == "LogonFailed"
+| where Protocol == "NTLM"
+| where FailureReason == "InvalidUserNameOrPassword"
+| summarize cnt_accountNames = dcount(AccountName) by RemoteDeviceName,RemoteIP,Protocol
+| where cnt_accountNames > 50
