@@ -1,0 +1,12 @@
+DeviceLogonEvents
+// time of the attack
+| where Timestamp  between (datetime(2023-07-04 02:51:21.9148004) ..datetime(2023-07-04 14:50:45.5294279) )
+| where ActionType == "LogonFailed"
+| where Protocol == "NTLM"
+| where FailureReason == "InvalidUserNameOrPassword"
+// account name used in the attack
+| where AccountName == "<Name of one of the auser names used in the attack>"
+// DeviceName is the Target in the 8004 event Id(i.e the target resource in MDI)
+| where DeviceName == "delevmlab2"
+// RemoteDeviceName,RemoteIP are name and IP of the source Machine in the attack
+| project AccountName,DeviceName,RemoteDeviceName,RemoteIP,Protocol
