@@ -1,0 +1,2 @@
+IdentityDirectoryEvents
+|where ActionType == "User Account Created"
