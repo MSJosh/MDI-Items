@@ -1,0 +1,3 @@
+IdentityQueryEvents
+| where Protocol == @"Ldap"
+| where Query == @"LDAP Search Scope: ""WholeSubtree"", Base Object: ""DC=msdemo,DC=local"", Search Filter:  "" (description=*pwd*) """
