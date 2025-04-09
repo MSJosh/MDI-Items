@@ -1,0 +1,14 @@
+IdentityQueryEvents
+| where Protocol == @"Ldap"
+| where Query == @"LDAP Search Scope: ""WholeSubtree"", Base Object: ""DC=msdemo,DC=local"", Search Filter:  "" (operatingSystem=*server*) """
+
+(operatingSystem=*server*)
+or more specific :
+(&(objectCategory=Computer)(|
+(operatingSystem=Windows 2000*)
+(operatingSystem=Windows Vista*)
+(operatingSystem=Windows XP*)
+(operatingSystem=Windows 7*)
+(operatingSystem=Windows 8*)
+(operatingSystem=Windows Server 200*)
+(operatingSystem=Windows Server 2012*)))
